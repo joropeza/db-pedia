@@ -49,8 +49,8 @@ function qDbPedia(query) {
 
 module.exports = {
 	person: function(name) {
-		requestDbPedia(name).then(function(results) {
-			console.log(results); 
+		return requestDbPedia(name).then(function(results) {
+			return results; 
 		});
 	},
 	personSparql: function(name) {
