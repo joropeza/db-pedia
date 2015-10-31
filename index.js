@@ -2,6 +2,18 @@ var Promise = require('bluebird');
 var SparqlClient = require('sparql-client');
 
 const endpoint = 'http://dbpedia.org/sparql';
+const dbPediaJsonEndpoint = 'http://dbpedia.org/resource/';
+
+var request = require('request-json');
+var client = request.createClient(dbPediaJsonEndpoint);
+
+function requestDbPedia(queryString) {
+	return new Promise(function(resolve, reject) {
+		client.get(queryString, function(err, res, body) {
+	  		resolve(body);
+		});
+	});
+}
 
 function personQuerystring(queryString) {
 	var query = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> PREFIX dbpprop: <http://dbpedia.org/property/> " +
@@ -15,7 +27,7 @@ function personQuerystring(queryString) {
 		"FILTER langMatches(lang(?label), 'en') " +
 		"FILTER langMatches(lang(?comment), 'en') " +
 		"}";
-		
+
 	return query;
 }
 
@@ -37,6 +49,11 @@ function qDbPedia(query) {
 
 module.exports = {
 	person: function(name) {
+		requestDbPedia(name).then(function(results) {
+			console.log(results); 
+		});
+	},
+	personSparql: function(name) {
 		var queryString = personQuerystring(name);
 		qDbPedia(queryString).then(function (results) { 
 			console.log(results);
