@@ -3,6 +3,22 @@ var SparqlClient = require('sparql-client');
 
 const endpoint = 'http://dbpedia.org/sparql';
 
+function personQuerystring(queryString) {
+	var query = "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> PREFIX dbpprop: <http://dbpedia.org/property/> " +
+		" SELECT * { " +
+		"<http://dbpedia.org/resource/" + queryString + "> dbpedia-owl:birthDate ?birthDate . " +
+		"optional { <http://dbpedia.org/resource/" + queryString + "> dbpedia-owl:deathDate ?deathDate } . " +
+		"<http://dbpedia.org/resource/" + queryString + "> rdfs:label ?label . " +
+		"<http://dbpedia.org/resource/" + queryString + "> rdfs:comment ?comment . " +
+		"<http://dbpedia.org/resource/" + queryString + "> dbpedia-owl:wikiPageID ?wikiId . " +
+		"optional { <http://dbpedia.org/resource/" + queryString + "> dbpprop:shortDescription ?description } . " +
+		"FILTER langMatches(lang(?label), 'en') " +
+		"FILTER langMatches(lang(?comment), 'en') " +
+		"}";
+		
+	return query;
+}
+
 function qDbPedia(query) {
 	return new Promise(function(resolve, reject) {
 		var client = new SparqlClient(endpoint);
@@ -21,7 +37,8 @@ function qDbPedia(query) {
 
 module.exports = {
 	person: function(name) {
-		qDbPedia(name).then(function (results) { 
+		var queryString = personQuerystring(name);
+		qDbPedia(queryString).then(function (results) { 
 			console.log(results);
 		});
 	}
