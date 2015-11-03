@@ -20,5 +20,8 @@
     "bluebird": "^3.0.1",
     "request-json": "^0.5.3",
     "sparql-client": "^0.2.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.0"
   }
 }
