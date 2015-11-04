@@ -12,7 +12,12 @@ String.prototype.replaceAll = function(str1, str2, ignore) {
 function requestDbPedia(queryString) {
 	return new Promise(function(resolve, reject) {
 		client.get(queryString, function(err, res, body) {
-	  		resolve(body);
+	  		if (body) {
+	  			resolve(body);
+	  		}
+	  		if (err) {
+	  			reject(err);
+	  		}
 		});
 	});
 }
