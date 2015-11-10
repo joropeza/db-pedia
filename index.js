@@ -12,6 +12,9 @@ String.prototype.replaceAll = function(str1, str2, ignore) {
 function requestDbPedia(queryString) {
 	return new Promise(function(resolve, reject) {
 		client.get(queryString, function(err, res, body) {
+	  		if (Object.keys(body).length === 0) {
+					reject(new Error('not in dbpedia'));
+				}
 	  		if (body) {
 	  			resolve(body);
 	  		}
