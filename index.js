@@ -13,7 +13,7 @@ function requestDbPedia(queryString) {
 	return new Promise(function(resolve, reject) {
 		client.get(queryString, function(err, res, body) {
 	  		if (Object.keys(body).length === 0) {
-					reject(new Error('not in dbpedia'));
+				resolve(null);
 				}
 	  		if (body) {
 	  			resolve(body);
